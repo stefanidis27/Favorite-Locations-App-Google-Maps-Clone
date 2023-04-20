@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arcgis.project.app.controller.UserMenuController">
+  <tabs>
+    <Tab closable="false" text="                    My Homepage                    ">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #f7f6f4;">
+               <children>
+                  <Text fill="#0e4e74" layoutX="36.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No. of favorite locations:">
+                     <font>
+                        <Font name="Calibri Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#0e4e74" layoutX="437.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current email:">
+                     <font>
+                        <Font name="Calibri Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#0e4e74" layoutX="438.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change email:">
+                     <font>
+                        <Font name="Calibri Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#0e4e74" layoutX="36.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change password:" wrappingWidth="194.6826171875">
+                     <font>
+                        <Font name="Calibri Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="numberOfFavoriteLocationsLabel" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="294.0" layoutY="36.0" prefHeight="36.0" prefWidth="116.0" textAlignment="CENTER" textFill="#0e4e74">
+                     <font>
+                        <Font name="Calibri Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="currentEmailLabel" layoutX="591.0" layoutY="43.0" prefHeight="27.0" prefWidth="180.0" textFill="#0e4e74">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="insertedNewPassword" layoutX="231.0" layoutY="97.0" prefHeight="25.0" prefWidth="179.0" promptText="Write your new password here.">
+                     <font>
+                        <Font name="Calibri" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="clickedUpdatePasswordButton" layoutX="128.0" layoutY="174.0" mnemonicParsing="false" onAction="#tryUpdatePassword" prefHeight="27.0" prefWidth="166.0" style="-fx-background-color: #0e4e74;" text="Update password" textFill="#f7f6f4">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="insertedNewEmail" layoutX="591.0" layoutY="97.0" prefHeight="25.0" prefWidth="181.0" promptText="Write your new email here.">
+                     <font>
+                        <Font name="Calibri" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="clickedUpdateEmailButton" layoutX="546.0" layoutY="174.0" mnemonicParsing="false" onAction="#tryUpdateEmail" prefHeight="27.0" prefWidth="166.0" style="-fx-background-color: #0e4e74;" text="Update email" textFill="#f7f6f4">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Line endX="-100.0" endY="-189.0" layoutX="520.0" layoutY="222.0" startX="-100.0" startY="9.0" stroke="#0e4e74" strokeWidth="2.0" />
+                  <Button fx:id="clickedLogOutButton" layoutX="771.0" layoutY="15.0" mnemonicParsing="false" onAction="#tryLogOut" prefHeight="34.0" prefWidth="87.0" style="-fx-background-color: #0e4e74;" text="Log Out" textFill="#f7f6f4">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Text fill="#0e4e74" layoutX="55.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="About the app:">
+                     <font>
+                        <Font name="Calibri Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f7f6f4" height="246.0" layoutX="55.0" layoutY="286.0" stroke="#0e4e74" strokeType="OUTSIDE" strokeWidth="3.0" width="790.0" />
+                  <Label fx:id="appInfoLabel" alignment="TOP_LEFT" layoutX="55.0" layoutY="286.0" prefHeight="246.0" prefWidth="790.0" textFill="#0e4e74">
+                     <font>
+                        <Font name="Calibri Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab closable="false" text="                    My Locations                    ">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="571.0" prefWidth="875.0" style="-fx-background-color: #0e4e74;">
+               <children>
+                  <TableView fx:id="favoriteLocationsTableView" layoutY="-6.0" prefHeight="517.0" prefWidth="900.0">
+                    <columns>
+                      <TableColumn fx:id="titleColumn" prefWidth="140.0" text="Title" />
+                      <TableColumn fx:id="shortDescriptionColumn" minWidth="0.0" prefWidth="241.0" text="Short description" />
+                        <TableColumn fx:id="latitudeColumn" prefWidth="159.0" style="-fx-alignment: CENTER;" text="Latitude" />
+                        <TableColumn fx:id="longitudeColumn" prefWidth="133.0" style="-fx-alignment: CENTER;" text="Longitude" />
+                        <TableColumn fx:id="dateColumn" prefWidth="90.0" style="-fx-alignment: CENTER;" text="Date" />
+                        <TableColumn fx:id="timeColumn" minWidth="0.0" prefWidth="122.0" style="-fx-alignment: CENTER;" text="Time" />
+                        <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="45.0" text="ID" visible="false" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="clickedDeleteFavoriteLocationButton" layoutX="320.0" layoutY="520.0" mnemonicParsing="false" onAction="#tryDeleteFavoriteLocation" prefHeight="37.0" prefWidth="261.0" style="-fx-background-color: #f7f6f4;" text="Delete Favorite Location" textFill="#0e4e74">
+                     <font>
+                        <Font name="Calibri Bold" size="20.0" />
+                     </font>
+                  </Button>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+      <Tab closable="false" text="                      Search Locations                      ">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #0e4e74;">
+               <children>
+                  <StackPane fx:id="stackPane" layoutY="52.0" prefHeight="465.0" prefWidth="900.0" style="-fx-background-color: #000000;" />
+                  <Button fx:id="clickedAddFavoriteLocationButton" layoutX="816.0" layoutY="527.0" mnemonicParsing="false" onAction="#tryAddFavoriteLocation" style="-fx-background-color: #f7f6f4;" text="Add" textFill="#0e4e74">
+                     <font>
+                        <Font name="Calibri Bold" size="20.0" />
+                     </font>
+                  </Button>
+                  <Text fill="#f7f6f4" layoutX="22.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f7f6f4" layoutX="257.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Short description:">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="insertedTitleOfFavoriteLocation" layoutX="80.0" layoutY="533.0" prefHeight="25.0" prefWidth="168.0" promptText="Please name your location." />
+                  <TextField fx:id="insertedShortDescriptionOfFavoriteLocation" layoutX="441.0" layoutY="533.0" prefHeight="25.0" prefWidth="355.0" promptText="You can also write a short description of your location." />
+                  <Text fill="#f7f6f4" layoutX="29.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="POIs keyword:">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="insertedPOIKeyword" layoutX="193.0" layoutY="14.0" prefHeight="25.0" prefWidth="249.0" promptText="POIs will be shown based on this name." />
+                  <Button fx:id="clickedSearchButton" layoutX="788.0" layoutY="8.0" mnemonicParsing="false" onAction="#trySearchByPOIKeywordByName" style="-fx-background-color: #f7f6f4;" text="Search" textFill="#0e4e74">
+                     <font>
+                        <Font name="Calibri Bold" size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab closable="false" text="              Popular Locations              ">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="popularLocationsTableView" prefHeight="571.0" prefWidth="900.0">
+                    <columns>
+                      <TableColumn fx:id="popularLatitudeColumn" prefWidth="325.0" style="-fx-alignment: CENTER;" text="Latitude" />
+                      <TableColumn fx:id="popularLongitudeColumn" prefWidth="291.0" style="-fx-alignment: CENTER;" text="Longitude" />
+                        <TableColumn fx:id="popularNumberOfUsersColumn" prefWidth="131.0" sortType="DESCENDING" style="-fx-alignment: CENTER;" text="Number of users" />
+                        <TableColumn fx:id="popularSelectedByMeColumn" prefWidth="138.0" style="-fx-alignment: CENTER;" text="Selected by me" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+  </tabs>
+</TabPane>

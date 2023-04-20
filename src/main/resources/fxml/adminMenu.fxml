@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arcgis.project.app.controller.AdminMenuController">
+  <tabs>
+    <Tab closable="false" text="                              My Homepage                              ">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #f7f6f4;">
+               <children>
+                  <Text fill="#0e4e74" layoutX="437.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current email:">
+                     <font>
+                        <Font name="Calibri Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#0e4e74" layoutX="438.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change email:">
+                     <font>
+                        <Font name="Calibri Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#0e4e74" layoutX="36.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change password:" wrappingWidth="194.6826171875">
+                     <font>
+                        <Font name="Calibri Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="currentEmailLabelAdmin" layoutX="591.0" layoutY="43.0" prefHeight="27.0" prefWidth="180.0" textFill="#0e4e74">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="insertedNewPasswordAdmin" layoutX="231.0" layoutY="44.0" prefHeight="25.0" prefWidth="179.0" promptText="Write your new password here.">
+                     <font>
+                        <Font name="Calibri" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="clickedUpdatePasswordButtonAdmin" layoutX="128.0" layoutY="92.0" mnemonicParsing="false" onAction="#tryUpdatePasswordAdmin" prefHeight="27.0" prefWidth="166.0" style="-fx-background-color: #0e4e74;" text="Update password" textFill="#f7f6f4">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="clickedUpdateAppInfoButton" layoutX="128.0" layoutY="174.0" mnemonicParsing="false" onAction="#tryUpdateAppInfo" prefHeight="27.0" prefWidth="166.0" style="-fx-background-color: #0e4e74;" text="Update app info" textFill="#f7f6f4">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="insertedNewEmailAdmin" layoutX="591.0" layoutY="97.0" prefHeight="25.0" prefWidth="181.0" promptText="Write your new email here.">
+                     <font>
+                        <Font name="Calibri" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="clickedUpdateEmailButtonAdmin" layoutX="546.0" layoutY="174.0" mnemonicParsing="false" onAction="#tryUpdateEmailAdmin" prefHeight="27.0" prefWidth="166.0" style="-fx-background-color: #0e4e74;" text="Update email" textFill="#f7f6f4">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f7f6f4" height="246.0" layoutX="55.0" layoutY="286.0" stroke="#0e4e74" strokeType="OUTSIDE" strokeWidth="3.0" width="790.0" />
+                  <TextField fx:id="insertedAppInfo" alignment="TOP_LEFT" layoutX="55.0" layoutY="286.0" prefHeight="246.0" prefWidth="790.0" style="-fx-background-color: #f7f6f4;">
+                     <font>
+                        <Font name="Calibri Bold" size="20.0" />
+                     </font>
+                  </TextField>
+                  <Line endX="-100.0" endY="-189.0" layoutX="520.0" layoutY="222.0" startX="-100.0" startY="9.0" stroke="#0e4e74" strokeWidth="2.0" />
+                  <Button fx:id="clickedLogOutButtonAdmin" layoutX="771.0" layoutY="15.0" mnemonicParsing="false" onAction="#tryLogOutAdmin" prefHeight="34.0" prefWidth="87.0" style="-fx-background-color: #0e4e74;" text="Log Out" textFill="#f7f6f4">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Text fill="#0e4e74" layoutX="55.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit app info:">
+                     <font>
+                        <Font name="Calibri Bold" size="25.0" />
+                     </font>
+                  </Text>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab closable="false" text="                                     User Editor                                     ">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="571.0" prefWidth="875.0" style="-fx-background-color: #0e4e74;">
+               <children>
+                  <TableView fx:id="usersTableView" layoutY="-6.0" prefHeight="517.0" prefWidth="900.0">
+                    <columns>
+                      <TableColumn fx:id="emailColumn" prefWidth="292.0" text="Email" />
+                      <TableColumn fx:id="numberOfFavoriteLocationsColumn" minWidth="0.0" prefWidth="314.0" style="-fx-alignment: CENTER;" text="Number of favorite locations" />
+                        <TableColumn fx:id="adminStatusColumn" minWidth="0.0" prefWidth="281.0" style="-fx-alignment: CENTER;" text="Admin status" />
+                        <TableColumn fx:id="userIdColumn" prefWidth="12.0" text="ID" visible="false" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="clickedUpdateUserPasswordButton" layoutX="31.0" layoutY="520.0" mnemonicParsing="false" onAction="#tryUpdateUserPassword" prefHeight="37.0" prefWidth="219.0" style="-fx-background-color: #f7f6f4;" text="Update User Password" textFill="#0e4e74">
+                     <font>
+                        <Font name="Calibri Bold" size="20.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="insertedNewPasswordForSelectedUser" layoutX="269.0" layoutY="524.0" prefHeight="29.0" prefWidth="363.0" promptText="Write a new password for the selected user.">
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="clickedDeleteUserButton" layoutX="650.0" layoutY="520.0" mnemonicParsing="false" onAction="#tryDeleteUser" prefHeight="37.0" prefWidth="210.0" style="-fx-background-color: #f7f6f4;" text="Delete User" textFill="#0e4e74">
+                     <font>
+                        <Font name="Calibri Bold" size="20.0" />
+                     </font>
+                  </Button>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+      <Tab closable="false" text="                              User Creator                              ">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #f7f6f4;">
+               <children>
+                  <Label fx:id="wrongNewEmailLabel" layoutX="358.0" layoutY="148.0" prefHeight="22.0" prefWidth="373.0" textFill="#92302d">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Text fill="#0e4e74" layoutX="160.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" wrappingWidth="93.65625">
+                     <font>
+                        <Font name="Calibri Bold" size="30.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#0e4e74" layoutX="160.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" wrappingWidth="137.5859375">
+                     <font>
+                        <Font name="Calibri Bold" size="30.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="insertedNewUserEmail" layoutX="357.0" layoutY="170.0" prefHeight="31.0" prefWidth="375.0" promptText="Enter the new user's email here.">
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="insertedNewUserPassword" layoutX="357.0" layoutY="217.0" prefHeight="31.0" prefWidth="376.0" promptText="Enter the new user's password here.">
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                  </TextField>
+                  <CheckBox fx:id="adminStatusCheckBox" layoutX="358.0" layoutY="272.0" mnemonicParsing="false" textFill="#0e4e74">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </CheckBox>
+                  <Button fx:id="clickedCreatedUserButton" layoutX="339.0" layoutY="359.0" mnemonicParsing="false" onAction="#tryCreateUser" prefHeight="55.0" prefWidth="223.0" style="-fx-background-color: #0e4e74;" text="Create User" textFill="#f7f6f4">
+                     <font>
+                        <Font name="Calibri Bold" size="30.0" />
+                     </font>
+                  </Button>
+                  <Text fill="#0e4e74" layoutX="160.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin status:" wrappingWidth="173.5859375">
+                     <font>
+                        <Font name="Calibri Bold" size="30.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#0e4e74" layoutX="160.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total number of users:" wrappingWidth="306.65625">
+                     <font>
+                        <Font name="Calibri Bold" size="30.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="totalNumberOfUsersLabel" layoutX="451.0" layoutY="82.0" prefHeight="37.0" prefWidth="146.0" textFill="#0e4e74">
+                     <font>
+                        <Font name="Calibri Bold" size="30.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+  </tabs>
+</TabPane>

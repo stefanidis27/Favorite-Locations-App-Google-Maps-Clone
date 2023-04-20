@@ -35,6 +35,7 @@ configurations {
 }
 
 dependencies {
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.7'
     implementation "com.esri.arcgisruntime:arcgis-java:$arcgisVersion"
     natives "com.esri.arcgisruntime:arcgis-java-jnilibs:$arcgisVersion"
     natives "com.esri.arcgisruntime:arcgis-java-resources:$arcgisVersion"
@@ -42,8 +43,8 @@ dependencies {
 }
 
 javafx {
-    version = "17.0.2"
-    modules = [ 'javafx.controls' ]
+    version = "19"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web']
 }
 
 task copyNatives(type: Copy) {
@@ -57,5 +58,5 @@ task copyNatives(type: Copy) {
 
 run {
     dependsOn copyNatives
-    mainClassName = 'com.mycompany.app.App'
+    mainClassName = 'com.arcgis.project.app.Main'
 }
