@@ -1,6 +1,8 @@
-# java-gradle-starter-project
+# Favorite-Locations-App-Google-Maps-Clone
 
-TODO
+A Java Desktop App that allows users to search for POIs around the world, save them in a personal database and find a route between any of them.
+
+This project entails a **PostgreSQL** database, a **Gradle** setup and a **JavaFX** backend and frontend. Many of the app's features were implmented by integration with **ArcGIS** SDK for Java.
 
 ## Licensing
 
