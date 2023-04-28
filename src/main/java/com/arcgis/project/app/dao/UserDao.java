@@ -3,6 +3,8 @@ package com.arcgis.project.app.dao;
 import com.arcgis.project.app.tableview.model.User;
 import javafx.collections.ObservableList;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -81,7 +83,7 @@ public class UserDao {
             preparedStatement = JDBCPostgreSQL.connection.prepareStatement(query);
             preparedStatement.setLong(1, ID);
             preparedStatement.setString(2, userEmail);
-            preparedStatement.setString(3, userPassword);
+            preparedStatement.setString(3, encryptPassword(userPassword));
             preparedStatement.setBoolean(4, adminStatus);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -110,7 +112,7 @@ public class UserDao {
         try {
             preparedStatement = JDBCPostgreSQL.connection.prepareStatement(query);
             preparedStatement.setString(1, userEmail);
-            preparedStatement.setString(2, userPassword);
+            preparedStatement.setString(2, encryptPassword(userPassword));
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 userID = resultSet.getLong("id");
@@ -206,4 +208,21 @@ public class UserDao {
         return numberOfUsers;
     }
 
+    private static String encryptPassword(String password) {
+        String encryptedPassword = null;
+        try {
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.update(password.getBytes());
+            byte[] bytes = m.digest();
+            StringBuilder s = new StringBuilder();
+            for (byte aByte : bytes) {
+                s.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+            }
+            encryptedPassword = s.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return encryptedPassword;
+    }
 }
