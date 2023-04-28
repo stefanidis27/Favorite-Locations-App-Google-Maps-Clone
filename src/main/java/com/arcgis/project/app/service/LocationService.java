@@ -34,7 +34,7 @@ public class LocationService {
         LocationDao.getAllLocationsByUserIDForArcgis(favoriteLocationsPoints, userID);
     }
 
-    public static void createNewFavoriteLocation(FavoriteLocation newFavoriteLocation) {
+    public static void createNewFavoriteLocation(FavoriteLocation newFavoriteLocation, long userID) {
         String timestampString = newFavoriteLocation.getDate() + " " + newFavoriteLocation.getTime();
         Timestamp timestamp = Timestamp.valueOf(timestampString);
 
@@ -44,7 +44,7 @@ public class LocationService {
             newFavoriteLocation.getShortDescription(),
             newFavoriteLocation.getLatitude(),
             newFavoriteLocation.getLongitude(),
-            timestamp
+            timestamp, userID
         );
     }
 

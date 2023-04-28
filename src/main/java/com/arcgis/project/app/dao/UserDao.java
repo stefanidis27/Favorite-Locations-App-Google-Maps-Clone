@@ -29,7 +29,7 @@ public class UserDao {
                 adminStatus = resultSet.getBoolean("admin");
                 users.add(new User(
                         email,
-                        UsersLocationsDao.getNumberOfFavoriteLocationsByUserID(id),
+                        LocationDao.getNumberOfFavoriteLocationsByUserID(id),
                         adminStatus ? "*" : "",
                         id
                 ));

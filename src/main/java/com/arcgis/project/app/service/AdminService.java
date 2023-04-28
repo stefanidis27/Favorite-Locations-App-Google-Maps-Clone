@@ -38,8 +38,8 @@ public class AdminService {
         long nextUserID = generateNextUserID();
         UserDao.saveUser(
                 nextUserID,
-                Utils.textWithoutTrailingWhiteSpaces(insertedNewUserEmail.getText()),
-                Utils.textWithoutTrailingWhiteSpaces(insertedNewUserPassword.getText()),
+                Utils.textWithoutWhiteSpaces(insertedNewUserEmail.getText()),
+                Utils.textWithoutWhiteSpaces(insertedNewUserPassword.getText()),
                 adminStatusCheckBox.isSelected()
         );
 
@@ -58,7 +58,7 @@ public class AdminService {
     private static boolean checkInvalidNewUserEmail(String email) {
         List<String> userEmails = UserDao.getAllUsersEmails();
         return userEmails.stream().anyMatch(userEmail -> userEmail.equals(
-                Utils.textWithoutTrailingWhiteSpaces(email)
+                Utils.textWithoutWhiteSpaces(email)
         ));
     }
 
@@ -96,7 +96,6 @@ public class AdminService {
     public static void deleteSelectedUser(User selectedUser, Label userCount, TableView<User> usersTableView) {
         List<Long> userLocationsIds = UserService.getUserLocationIDs(selectedUser.getId());
         for (Long userLocationId : userLocationsIds) {
-            UserService.deleteUserLocationLink(selectedUser.getId(), userLocationId);
             LocationService.deleteUserLocationByLocationID(userLocationId);
         }
         UserDao.deleteUserByID(selectedUser.getId());

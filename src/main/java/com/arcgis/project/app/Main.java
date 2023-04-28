@@ -35,7 +35,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         mainStage = stage;
         stage.setResizable(false);
-        stage.setTitle("It's time to eat in San Francisco");
+        stage.setTitle("Favorite Locations App");
         stage.setWidth(900);
         stage.setHeight(640);
         stage.show();

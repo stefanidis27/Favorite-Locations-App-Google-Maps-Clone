@@ -19,7 +19,7 @@ public class LoginService {
             wrongLogInWarningLabel.setText("");
         } else {
             if (!checkCredentials(
-                    Utils.textWithoutTrailingWhiteSpaces(insertedEmail.getText()),
+                    Utils.textWithoutWhiteSpaces(insertedEmail.getText()),
                     insertedPassword.getText()
             )) {
                 wrongLogInWarningLabel.setText("Wrong username or password!");

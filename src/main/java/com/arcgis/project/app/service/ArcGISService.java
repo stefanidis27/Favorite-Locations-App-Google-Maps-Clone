@@ -184,14 +184,6 @@ public class ArcGISService {
         }
     }
 
-    public static void setFeatureLayers(ArcGISMap map) {
-        String neighbourhoodsRestaurantsUrl =
-                "https://services.arcgis.com/Zs2aNLFN00jrS4gG/arcgis/rest/services/Neighborhoods_Restaurants/FeatureServer/0";
-        ServiceFeatureTable neighborhoodsRestaurantsServiceFeatureTable = new ServiceFeatureTable(neighbourhoodsRestaurantsUrl);
-        FeatureLayer featureLayer = new FeatureLayer(neighborhoodsRestaurantsServiceFeatureTable);
-        map.getOperationalLayers().add(featureLayer);
-    }
-
     public static void performLocalSearchByName(String POIName) {
         LocatorTask locatorTask = new LocatorTask(
                 "https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer"

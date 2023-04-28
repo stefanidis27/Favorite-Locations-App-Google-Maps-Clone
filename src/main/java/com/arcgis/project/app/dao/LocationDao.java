@@ -11,9 +11,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class LocationDao {
+
+    public record PopularLocationArcgis(double latitude, double longitude, long numberOfUsers) {
+
+        public long getNumberOfUsers() {
+            return numberOfUsers;
+        }
+
+        public double getLongitude() {
+            return longitude;
+        }
+
+        public double getLatitude() {
+            return latitude;
+        }
+    }
 
     public static List<Long> getAllLocationsIDs() {
         String query = "SELECT id FROM public.\"LOCATIONS\" ORDER BY id ASC";
@@ -35,10 +51,10 @@ public class LocationDao {
 
     public static void saveLocation(
             long ID, String title, String description,
-            Double latitude, Double longitude, Timestamp timestamp
+            Double latitude, Double longitude, Timestamp timestamp, long userID
     ) {
-        String query = "INSERT INTO public.\"LOCATIONS\"(id, title, description, latitude, longitude, timestamp)\n"
-                + "VALUES(?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO public.\"LOCATIONS\"(id, title, description, latitude, longitude, timestamp, user_id) "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement;
 
         try {
@@ -49,6 +65,7 @@ public class LocationDao {
             preparedStatement.setDouble(4, latitude);
             preparedStatement.setDouble(5, longitude);
             preparedStatement.setTimestamp(6, timestamp);
+            preparedStatement.setLong(7, userID);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,9 +86,8 @@ public class LocationDao {
     }
 
     public static void getAllLocationsByUserID(ObservableList<FavoriteLocation> favoriteLocations, long userID) {
-        String query = "SELECT public.\"LOCATIONS\".* FROM public.\"LOCATIONS\" JOIN public.\"USERS_LOCATIONS_LINK\"\n"
-                + "ON (public.\"LOCATIONS\".id = public.\"USERS_LOCATIONS_LINK\".location_id)\n"
-                + "WHERE public.\"USERS_LOCATIONS_LINK\".user_id=?";
+        String query = "SELECT public.\"LOCATIONS\".* FROM public.\"LOCATIONS\" "
+                + "WHERE public.\"LOCATIONS\".user_id=?";
         PreparedStatement preparedStatement;
         long id;
         String title, description;
@@ -105,11 +121,52 @@ public class LocationDao {
         }
     }
 
+    public static List<Long> getAllLocationIDsByUserID(long userID) {
+        String query = "SELECT public.\"LOCATIONS\".id FROM public.\"LOCATIONS\" "
+                + "WHERE public.\"LOCATIONS\".user_id=?";
+        PreparedStatement preparedStatement;
+        List<Long> locationIDs = new ArrayList<>();
+        long id;
+
+        try {
+            preparedStatement = JDBCPostgreSQL.connection.prepareStatement(query);
+            preparedStatement.setLong(1, userID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                id = resultSet.getLong("id");
+                locationIDs.add(id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return locationIDs;
+    }
+
+    public static Long getNumberOfFavoriteLocationsByUserID(long userID) {
+        String query = "SELECT COUNT(*) FROM public.\"LOCATIONS\" "
+                + "WHERE public.\"LOCATIONS\".user_id=?";
+        PreparedStatement preparedStatement;
+        long numberOfFavoriteLocations = 0L;
+
+        try {
+            preparedStatement = JDBCPostgreSQL.connection.prepareStatement(query);
+            preparedStatement.setLong(1, userID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                numberOfFavoriteLocations = resultSet.getLong("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return numberOfFavoriteLocations;
+    }
+
     public static void getAllLocationsByUserIDForArcgis(List<Point> favoriteLocationsPoints, long userID) {
-        String query = "SELECT public.\"LOCATIONS\".latitude,public.\"LOCATIONS\".longitude\n"
-                + "FROM public.\"LOCATIONS\" JOIN public.\"USERS_LOCATIONS_LINK\"\n"
-                + "ON (public.\"LOCATIONS\".id = public.\"USERS_LOCATIONS_LINK\".location_id)\n"
-                + "WHERE public.\"USERS_LOCATIONS_LINK\".user_id=?";
+        String query = "SELECT public.\"LOCATIONS\".latitude,public.\"LOCATIONS\".longitude "
+                + "FROM public.\"LOCATIONS\" "
+                + "WHERE public.\"LOCATIONS\".user_id=?";
         PreparedStatement preparedStatement;
         double latitude, longitude;
 
@@ -128,12 +185,13 @@ public class LocationDao {
     }
 
     public static void getAllLocationsPopularForArcGIS(List<Point> popularLocationsPoints) {
-        String query = "SELECT public.\"LOCATIONS\".latitude, public.\"LOCATIONS\".longitude\n" +
-                "FROM public.\"LOCATIONS\"\n" +
-                "GROUP BY public.\"LOCATIONS\".latitude, public.\"LOCATIONS\".longitude\n" +
-                "LIMIT 10";
+        String query = "SELECT public.\"LOCATIONS\".latitude, public.\"LOCATIONS\".longitude, COUNT(*) " +
+                "FROM public.\"LOCATIONS\" " +
+                "GROUP BY public.\"LOCATIONS\".latitude, public.\"LOCATIONS\".longitude ";
         PreparedStatement preparedStatement;
+        List<PopularLocationArcgis> popularLocations = new ArrayList<>();
         double latitude, longitude;
+        long numberOfUsers;
 
         try {
             preparedStatement = JDBCPostgreSQL.connection.prepareStatement(query);
@@ -141,16 +199,31 @@ public class LocationDao {
             while (resultSet.next()) {
                 latitude = resultSet.getDouble("latitude");
                 longitude = resultSet.getDouble("longitude");
-                popularLocationsPoints.add(new Point(longitude, latitude, SpatialReferences.getWgs84()));
+                numberOfUsers = resultSet.getLong("count") - getNumberOfDuplicatesLocationByLatitudeAndLongitude(
+                        latitude,
+                        longitude
+                );
+                popularLocations.add(new PopularLocationArcgis(latitude, longitude, numberOfUsers));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        popularLocations.sort(Comparator.comparing(PopularLocationArcgis::getNumberOfUsers).reversed());
+        int numberOfShownLocations = Math.min(popularLocations.size(), 10);
+        for (int i = 0; i < numberOfShownLocations; i++) {
+            Point point = new Point(
+                    popularLocations.get(i).getLongitude(),
+                    popularLocations.get(i).getLatitude(),
+                    SpatialReferences.getWgs84()
+            );
+            popularLocationsPoints.add(point);
+        }
     }
 
     public static void getAllLocationsPopular(ObservableList<PopularLocation> popularLocations, long userID) {
-        String query = "SELECT public.\"LOCATIONS\".latitude, public.\"LOCATIONS\".longitude, COUNT(*)\n" +
-                "FROM public.\"LOCATIONS\"\n" +
+        String query = "SELECT public.\"LOCATIONS\".latitude, public.\"LOCATIONS\".longitude, COUNT(*) " +
+                "FROM public.\"LOCATIONS\" " +
                 "GROUP BY public.\"LOCATIONS\".latitude, public.\"LOCATIONS\".longitude";
         PreparedStatement preparedStatement;
         double latitude, longitude;
@@ -197,10 +270,8 @@ public class LocationDao {
             double latitude,
             double longitude
     ) {
-        String query = "SELECT COUNT(*) FROM public.\"LOCATIONS\"\n" +
-                "JOIN public.\"USERS_LOCATIONS_LINK\"\n" +
-                "ON (public.\"LOCATIONS\".id = public.\"USERS_LOCATIONS_LINK\".location_id)\n" +
-                "WHERE public.\"USERS_LOCATIONS_LINK\".user_id=?\n" +
+        String query = "SELECT COUNT(*) FROM public.\"LOCATIONS\" " +
+                "WHERE public.\"LOCATIONS\".user_id=? " +
                 "AND public.\"LOCATIONS\".latitude=?\n" +
                 "AND public.\"LOCATIONS\".longitude=?";
         long numberOfDuplicates = 0L;
@@ -230,10 +301,8 @@ public class LocationDao {
             double latitude,
             double longitude
     ) {
-        String query = "SELECT public.\"LOCATIONS\".id FROM public.\"LOCATIONS\"\n" +
-                "JOIN public.\"USERS_LOCATIONS_LINK\"\n" +
-                "ON (public.\"LOCATIONS\".id = public.\"USERS_LOCATIONS_LINK\".location_id)\n" +
-                "WHERE public.\"USERS_LOCATIONS_LINK\".user_id=?\n" +
+        String query = "SELECT public.\"LOCATIONS\".id FROM public.\"LOCATIONS\" " +
+                "WHERE public.\"LOCATIONS\".user_id=? " +
                 "AND public.\"LOCATIONS\".latitude=?\n" +
                 "AND public.\"LOCATIONS\".longitude=?";
         PreparedStatement preparedStatement;

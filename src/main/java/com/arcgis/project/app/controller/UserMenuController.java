@@ -109,7 +109,6 @@ public class UserMenuController implements Initializable {
         FavoriteLocation selectedFavoriteLocation = favoriteLocationsTableView.getSelectionModel().getSelectedItem();
         if(selectedFavoriteLocation != null) {
             UserService.deleteUserLocation(
-                    userID,
                     selectedFavoriteLocation,
                     numberOfFavoriteLocationsLabel,
                     favoriteLocationsTableView
@@ -164,7 +163,6 @@ public class UserMenuController implements Initializable {
         mapView = new MapView();
         stackPane.getChildren().add(mapView);
         ArcGISMap map = new ArcGISMap(BasemapStyle.ARCGIS_TOPOGRAPHIC);
-        ArcGISService.setFeatureLayers(map);
         mapView.setMap(map);
         mapView.setViewpoint(new Viewpoint(
                 ArcGISService.initialLocation.getY(),

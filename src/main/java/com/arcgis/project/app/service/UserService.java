@@ -1,7 +1,7 @@
 package com.arcgis.project.app.service;
 
+import com.arcgis.project.app.dao.LocationDao;
 import com.arcgis.project.app.dao.UserDao;
-import com.arcgis.project.app.dao.UsersLocationsDao;
 import com.arcgis.project.app.tableview.model.FavoriteLocation;
 import com.arcgis.project.app.utils.Utils;
 import com.esri.arcgisruntime.geometry.Point;
@@ -39,20 +39,16 @@ public class UserService {
             Label currentEmailLabel,
             TextField insertedNewEmail
     ) {
-        UserDao.updateUserEmailByID(userID, Utils.textWithoutTrailingWhiteSpaces(newEmail));
+        UserDao.updateUserEmailByID(userID, Utils.textWithoutWhiteSpaces(newEmail));
         currentEmailLabel.setText(insertedNewEmail.getText());
     }
 
     public static void updateUserPassword(long userID, String newPassword) {
-        UserDao.updateUserPasswordByID(userID, Utils.textWithoutTrailingWhiteSpaces(newPassword));
+        UserDao.updateUserPasswordByID(userID, Utils.textWithoutWhiteSpaces(newPassword));
     }
 
     public static Long getNumberOfFavoriteLocations(long userID) {
-        return UsersLocationsDao.getNumberOfFavoriteLocationsByUserID(userID);
-    }
-
-    public static void deleteUserLocationLink(long userID, long locationID) {
-        UsersLocationsDao.deleteUserLocationLinkByUserIDAndLocationID(userID, locationID);
+        return LocationDao.getNumberOfFavoriteLocationsByUserID(userID);
     }
 
     public static void getAllUserLocations(ObservableList<FavoriteLocation> favoriteLocations, long userID) {
@@ -78,9 +74,7 @@ public class UserService {
                 timeData[0],
                 LocationService.generateNextLocationID()
         );
-
-        LocationService.createNewFavoriteLocation(newFavoriteLocation);
-        UserService.createNewLocationLink(ID, newFavoriteLocation.getId());
+        LocationService.createNewFavoriteLocation(newFavoriteLocation, ID);
 
         long updatedNumber = Long.parseLong(numberOfFavoriteLocationsLabel.getText()) + 1;
         numberOfFavoriteLocationsLabel.setText(Long.toString(updatedNumber));
@@ -89,37 +83,15 @@ public class UserService {
         favoriteLocationsTableView.getItems().add(newFavoriteLocation);
     }
 
-    public static void createNewLocationLink(long userID, long locationID) {
-        UsersLocationsDao.saveUserLocationLink(generateNextUserLocationLinkID(), userID, locationID);
-    }
-
     public static List<Long> getUserLocationIDs(long ID) {
-        return UsersLocationsDao.getAllUserLocationLinkIDsByUserID(ID);
-    }
-
-    private static long generateNextUserLocationLinkID() {
-        long nextUserLocationLinkID = 1L;
-        List<Long> userLocationLinkIDs = UsersLocationsDao.getAllUserLocationLinkIDs();
-        if (userLocationLinkIDs.isEmpty()) {
-            return nextUserLocationLinkID;
-        }
-
-        for (int i = 0; i < userLocationLinkIDs.size() - 1; i++) {
-            if (userLocationLinkIDs.get(i + 1) - userLocationLinkIDs.get(i) != 1) {
-                return userLocationLinkIDs.get(i) + 1;
-            }
-        }
-
-        return userLocationLinkIDs.size() + 1;
+        return LocationDao.getAllLocationIDsByUserID(ID);
     }
 
     public static void deleteUserLocation(
-            long ID,
             FavoriteLocation selectedFavoriteLocation,
             Label numberOfFavoriteLocationsLabel,
             TableView<FavoriteLocation> favoriteLocationsTableView
     ) {
-        UserService.deleteUserLocationLink(ID, selectedFavoriteLocation.getId());
         LocationService.deleteUserLocationByLocationID(selectedFavoriteLocation.getId());
 
         long updatedNumber = Long.parseLong(numberOfFavoriteLocationsLabel.getText()) - 1;
